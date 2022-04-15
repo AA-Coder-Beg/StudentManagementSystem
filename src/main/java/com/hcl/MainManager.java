@@ -12,9 +12,10 @@ package com.hcl;
 
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-
+import java.text.ParseException;
 import java.util.stream.Collectors;
 import java.util.List;
 import java.util.Scanner;
@@ -25,7 +26,7 @@ public class MainManager {
 	
 	public static void main(String[] args) {
 		greeting(); //Greets the user to the Student Management System (SMS)
-		commandMenu(); //Displays the command menu
+		
 		Set<Student> studentSet = new TreeSet<>();
 		String cmdKey = ""; //Checking input for Switch Case	
 		
@@ -58,6 +59,7 @@ public class MainManager {
 		try (Scanner read = new Scanner(System.in);) {	
 			writeFile(studentSet); //Writing the information to a file
 			while(!(cmdKey.equals("X") || cmdKey.equals("Exit"))) {
+				commandMenu(); //Displays the command menu
 				System.out.println("Enter a command: ");
 				cmdKey = read.next();
 				switch(cmdKey) {
@@ -127,6 +129,23 @@ public class MainManager {
 		System.out.println("Option 8: Read -- \n >>Reads from the created file");
 	}
 
+	//This is the function where the file is written to
+	private static void readFile(Set<Student> studentSet) throws ParseException {
+		try(Scanner fileReader = new Scanner(System.in);){
+			while(fileReader.hasNextLine()) {
+				String fileData[] = fileReader.nextLine().split(" - ");
+				int rollNo = Integer.parseInt(fileData[0]);
+				String name = fileData[1];
+				int age = Integer.parseInt(fileData[2]);
+				char ID = fileData[3].charAt(0);
+			}
+		} catch (Exception fn) {
+			System.out.println("File not found...");
+			fn.printStackTrace();
+		}
+		
+	}
+	
 	//This is the function where the file is written to
 	private static void writeFile(Set<Student> studentSet) throws IOException {
 		try (FileWriter write = new FileWriter("Students.txt");) {
